@@ -52,13 +52,11 @@ class TowersOfHanoi
   end
 
   def valid_move?(from_tower,to_tower)
-    if @towers[to_tower].empty? && @towers[from_tower].empty? == false
-      return true
-      if @towers[from_tower].pop > @towers[to_tower][-1]
-        return false
-      end
-    else
+    return false if @towers[from_tower].empty?
+    unless @towers[to_tower].empty? || @towers[to_tower][-1] > @towers[from_tower][-1]
       return false
+    else
+      return true
     end
   end
 
@@ -70,16 +68,24 @@ class TowersOfHanoi
     @towers[0].empty? && @towers.any? { |tower| tower.length == 3 }
   end
 
+  def render
+    "#{@towers}"
+  end
+
   def play
+    from_tower = 0
+    to_tower = 0
     until won?
-      until valid_move?(from_tower,to_tower)
-        puts "What piles to select a disc from?"
-        from_tower = gets.chomp.to_i
-        puts "Which piles would you move your dics to?"
-        to_tower = gets.chomp.to_i
+      puts "What piles to select a disc from?"
+      from_tower = gets.chomp.to_i - 1
+      puts "Which piles would you move your dics to?"
+      to_tower = gets.chomp.to_i - 1
+      if valid_move?(from_tower,to_tower)
         move(from_tower,to_tower)
+        puts render
+      else
+        puts "invalid move"
       end
     end
   end
-
 end
