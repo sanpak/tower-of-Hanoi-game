@@ -41,4 +41,45 @@
 
 class TowersOfHanoi
 
+  attr_reader :tower1, :tower2, :tower3
+
+  def initialize
+    @towers = [[3,2,1],[],[]]
+  end
+
+  def towers
+    @towers
+  end
+
+  def valid_move?(from_tower,to_tower)
+    if @towers[to_tower].empty? && @towers[from_tower].empty? == false
+      return true
+      if @towers[from_tower].pop > @towers[to_tower][-1]
+        return false
+      end
+    else
+      return false
+    end
+  end
+
+  def move(from_tower,to_tower)
+    @towers[to_tower] << @towers[from_tower].pop
+  end
+
+  def won?
+    @towers[0].empty? && @towers.any? { |tower| tower.length == 3 }
+  end
+
+  def play
+    until won?
+      until valid_move?(from_tower,to_tower)
+        puts "What piles to select a disc from?"
+        from_tower = gets.chomp.to_i
+        puts "Which piles would you move your dics to?"
+        to_tower = gets.chomp.to_i
+        move(from_tower,to_tower)
+      end
+    end
+  end
+
 end
