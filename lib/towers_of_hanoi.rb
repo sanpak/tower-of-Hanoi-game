@@ -58,6 +58,14 @@ class TowersOfHanoi
     else
       return true
     end
+    # return false if from_tower > 3 && to_tower > 3
+    # if @towers[to_tower].empty? && @towers[from_tower].empty? == false
+    #   return true
+    #   # if @towers[from_tower].pop > @towers[to_tower][-1]
+    #   #   return false
+    #   # end
+    # end
+    # return true if @towers[from_tower].pop < @towers[to_tower][-1]
   end
 
   def move(from_tower,to_tower)
@@ -69,23 +77,40 @@ class TowersOfHanoi
   end
 
   def render
-    "#{@towers}"
+    top_row = @towers.map { |tower| tower.length >= 3 ? print_disc(tower[2]) : '       ' }
+    mid_row = @towers.map { |tower| tower.length >= 2 ? print_disc(tower[1]) : '       ' }
+    bot_row = @towers.map { |tower| tower.length >= 1 ? print_disc(tower[0]) : '       ' }
+    "#{top_row.join(' ')}\n#{mid_row.join(' ')}\n#{bot_row.join(' ')}\n_______ _______ _______"
+
+  end
+
+  def print_disc(disc)
+    return '   +   ' if disc == 1
+    return '  +++  ' if disc == 2
+    return ' +++++ ' if disc == 3
   end
 
   def play
     from_tower = 0
     to_tower = 0
     until won?
-      puts "What piles to select a disc from?"
-      from_tower = gets.chomp.to_i - 1
-      puts "Which piles would you move your dics to?"
-      to_tower = gets.chomp.to_i - 1
-      if valid_move?(from_tower,to_tower)
-        move(from_tower,to_tower)
-        puts render
-      else
-        puts "invalid move"
+
+        puts "What piles to select a disc from?"
+        from_tower = gets.chomp.to_i - 1
+        puts "Which piles would you move your dics to?"
+        to_tower = gets.chomp.to_i - 1
+        if valid_move?(from_tower,to_tower)
+          move(from_tower,to_tower)
+          puts render
+        else
+          puts "invalid move"
+        end
+
       end
-    end
   end
+
 end
+
+game = TowersOfHanoi.new
+# game.play
+# puts game.render
